@@ -1,0 +1,27 @@
+
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/rest/api/3/search",
+    "queryParameters": {
+      "jql": {
+        "equalTo": "project=QAPI"
+      }
+    },
+    "headers": {
+      "Authorization": {
+        "matches": ".+"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "search-results.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  },
+  "priority": 5
+}
+
+

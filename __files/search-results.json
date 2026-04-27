@@ -1,0 +1,32 @@
+
+{
+  "startAt": 0,
+  "maxResults": 50,
+  "total": 2,
+  "issues": [
+    {
+      "id": "10001",
+      "key": "QAPI-123",
+      "self": "https://jira.example.com/rest/api/3/issue/10001",
+      "fields": {
+        "summary": "Connexion impossible à Jira",
+        "issuetype": { "name": "Story" },
+        "status": { "name": "To Do" },
+        "assignee": { "displayName": "Jean Dupont" }
+      }
+    },
+    {
+      "id": "10002",
+      "key": "QAPI-124",
+      "self": "https://jira.example.com/rest/api/3/issue/10002",
+      "fields": {
+        "summary": "Erreur 500 lors de la création d'un ticket",
+        "issuetype": { "name": "Bug" },
+        "status": { "name": "In Progress" },
+        "assignee": { "displayName": "Alice Martin" }
+      }
+    }
+  ]
+}
+
+

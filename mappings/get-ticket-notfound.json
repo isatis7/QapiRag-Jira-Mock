@@ -1,0 +1,27 @@
+
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/api/3/issue/[^/]+",
+    "headers": {
+      "Authorization": {
+        "matches": ".+"
+      }
+    }
+  },
+  "response": {
+    "status": 404,
+    "jsonBody": {
+      "errorMessages": [
+        "Issue does not exist or you do not have permission to see it."
+      ],
+      "errors": {}
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  },
+  "priority": 10
+}
+
+

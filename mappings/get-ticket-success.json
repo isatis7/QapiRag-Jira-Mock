@@ -1,0 +1,22 @@
+
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/rest/api/3/issue/QAPI-123",
+    "headers": {
+      "Authorization": {
+        "matches": ".+"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "ticket-QAPI-123.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  },
+  "priority": 5
+}
+
+

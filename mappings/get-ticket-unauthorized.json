@@ -1,0 +1,28 @@
+
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/rest/api/3/issue/.*",
+    "headers": {
+      "Authorization": {
+        "absent": true
+      }
+    }
+  },
+  "response": {
+    "status": 401,
+    "jsonBody": {
+      "errorMessages": [
+        "You are not authenticated"
+      ],
+      "errors": {}
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "WWW-Authenticate": "Bearer realm=\"Atlassian\""
+    }
+  },
+  "priority": 1
+}
+
+

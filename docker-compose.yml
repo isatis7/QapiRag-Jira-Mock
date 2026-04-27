@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  wiremock:
+    image: wiremock/wiremock:3.3.1
+    container_name: qapirag-jira-mock
+    ports:
+      - "8092:8080"
+    volumes:
+      - ./mappings:/home/wiremock/mappings:ro
+      - ./__files:/home/wiremock/__files:ro
+    command: --verbose
+    restart: unless-stopped
+
