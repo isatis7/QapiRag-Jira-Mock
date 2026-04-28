@@ -40,5 +40,5 @@ build/
 
 # WireMock / local fixtures
 wiremock.log
-__files/
-mappings/
+# Note: mappings/ and __files/ are now versioned to ensure reproducible builds and CI images.
+
