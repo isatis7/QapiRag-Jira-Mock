@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/rest/api/3/search",
+    "queryParameters": {
+      "jql": {
+        "matches": ".*project=QAPI.*status=Done.*"
+      }
+    },
+    "headers": {
+      "Authorization": {
+        "matches": ".+"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "search-empty.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  },
+  "priority": 5
+}
+
+
