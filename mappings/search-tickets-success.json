@@ -10,7 +10,7 @@
     },
     "headers": {
       "Authorization": {
-        "matches": ".+"
+        "matches": "^Bearer .+"
       }
     }
   },
@@ -23,5 +23,6 @@
   },
   "priority": 5
 }
+
 
 

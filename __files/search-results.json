@@ -8,12 +8,12 @@
       "id": "10001",
       "key": "QAPI-123",
       "self": "https://jira.example.com/rest/api/3/issue/10001",
-      "fields": {
-        "summary": "Connexion impossible à Jira",
-        "issuetype": { "name": "Story" },
-        "status": { "name": "To Do" },
-        "assignee": { "displayName": "Jean Dupont" }
-      }
+        "fields": {
+          "summary": "Connexion impossible à Jira",
+          "issuetype": { "name": "Story" },
+          "status": { "name": "In Progress" },
+          "assignee": { "displayName": "Jean Dupont" }
+        }
     },
     {
       "id": "10002",
@@ -28,5 +28,6 @@
     }
   ]
 }
+
 
 

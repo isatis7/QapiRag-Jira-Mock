@@ -10,7 +10,7 @@
     },
     "headers": {
       "Authorization": {
-        "matches": ".+"
+        "matches": "^Bearer .+"
       }
     }
   },
@@ -21,7 +21,8 @@
       "Content-Type": "application/json"
     }
   },
-  "priority": 5
+  "priority": 3
 }
+
 
 
