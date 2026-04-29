@@ -42,3 +42,4 @@ build/
 wiremock.log
 # Note: mappings/ and __files/ are now versioned to ensure reproducible builds and CI images.
 
+mcp/Dockerfile.bak
