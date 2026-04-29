@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  wiremock:
+    image: wiremock/wiremock:2.35.0
+    container_name: wiremock
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./mappings:/home/wiremock/mappings
+      - ./__files:/home/wiremock/__files
+    environment:
+      - JAVA_OPTS=-Xmx256m
+  mcp:
+    build: ./mcp
+    container_name: qapirag-mcp
+    depends_on:
+      - wiremock
+    environment:
+      - WIREMOCK_HOST=wiremock
+      - WIREMOCK_PORT=8080
+      - MCP_ENFORCE_AUTH=false
+    ports:
+      - "3000:3000"
+

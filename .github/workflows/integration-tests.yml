@@ -1,0 +1,55 @@
+name: Integration tests (MCP ↔ WireMock)
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Ensure Docker and Docker Compose available
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Build MCP image
+        run: |
+          docker compose build --no-cache mcp
+
+      - name: Start WireMock and MCP
+        run: |
+          docker compose up -d --no-deps wiremock mcp
+
+      - name: Wait for WireMock health
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sS http://localhost:8092/health | grep -q '"status":"UP"'; then
+              echo "WireMock ready"; break
+            fi
+            echo "waiting wiremock... ($i/30)"; sleep 2
+          done
+
+      - name: Wait for MCP health
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sS http://localhost:3000/health | grep -q '"status":"UP"'; then
+              echo "MCP ready"; break
+            fi
+            echo "waiting mcp... ($i/30)"; sleep 2
+          done
+
+      - name: Run MCP integration test script
+        run: |
+          chmod +x ./scripts/test-mcp.sh
+          ./scripts/test-mcp.sh
+
+      - name: Tear down services
+        if: always()
+        run: |
+          docker compose down --remove-orphans
+

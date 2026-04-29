@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "PUT",
+    "urlPattern": "/rest/api/3/issue/.*"
+  },
+  "response": {
+    "status": 204,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": ""
+  }
+}
+
