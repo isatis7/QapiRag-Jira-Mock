@@ -1,0 +1,17 @@
+{
+  "name": "qapirag-mcp-mock",
+  "version": "0.1.0",
+  "description": "MCP router in front of WireMock for QapiRag testing",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
+
+
