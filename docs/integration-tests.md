@@ -42,4 +42,3 @@ static void registerProps(DynamicPropertyRegistry r) {
 ```
 
 CI : s'assurer que WireMock est démarré avant d'exécuter les tests (voir `ci.md` pour le workflow GitHub Actions exemple).
-

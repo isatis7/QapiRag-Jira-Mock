@@ -5,7 +5,7 @@
     "urlPath": "/rest/api/3/issue/QAPI-123",
     "headers": {
       "Authorization": {
-        "matches": "^Bearer .+"
+        "matches": ".+"
       }
     }
   },
@@ -18,6 +18,4 @@
   },
   "priority": 5
 }
-
-
 

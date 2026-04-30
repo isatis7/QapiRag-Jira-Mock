@@ -32,4 +32,3 @@ docker push ghcr.io/<owner>/qapirag-jira-mock:1.0.0
 5) Points réseau importants
 - Si MCP et mock sont dans le même `docker-compose`, MCP doit utiliser l'URL interne du service (ex: `http://qapirag-jira-mock:8080`).
 - Si MCP dans un container indépendant et mock sur l'hôte, sur Docker Desktop utilisez `host.docker.internal:8092`. Sur Linux, ajoutez host via `--add-host` ou utilisez `--network host` si acceptable.
-

@@ -10,24 +10,11 @@
       "name": "Story"
     },
     "status": {
-      "name": "In Progress"
+      "name": "To Do"
     },
     "assignee": {
       "displayName": "Jean Dupont"
     },
-    "reporter": {
-      "displayName": "Paul Martin"
-    },
-    "creator": {
-      "displayName": "System Bot"
-    },
-    "components": [ { "name": "backend" } ],
-    "resolution": null,
-    "comments": [
-      { "author": { "displayName": "Jean Dupont" }, "body": "Investigating the SSO issue.", "created": "2026-04-02T10:00:00.000+0000" },
-      { "author": { "displayName": "Alice Martin" }, "body": "Possible duplicate of QAPI-120.", "created": "2026-04-03T12:15:00.000+0000" }
-    ],
-    "description": "L'utilisateur ne peut pas se connecter à Jira via SSO. Etapes reproductions: 1) ... 2) ...\nDétails techniques: le token semble expiré."
     "priority": {
       "name": "Major"
     },
@@ -40,6 +27,4 @@
   },
   "expand": "operations,versionedRepresentations,editmeta,changelog"
 }
-
-
 

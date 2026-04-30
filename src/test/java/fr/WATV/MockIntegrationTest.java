@@ -137,4 +137,3 @@ public class MockIntegrationTest {
         Assertions.assertThat(json.at("/changelog/histories").isArray()).isTrue();
     }
 }
-

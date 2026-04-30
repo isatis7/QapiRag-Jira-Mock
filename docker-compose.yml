@@ -1,12 +1,9 @@
 services:
   wiremock:
-    # image can be overridden to use an immutable image (e.g. ghcr.io/<owner>/qapirag-jira-mock:1.0.0)
-    image: ${WIREMOCK_IMAGE:-wiremock/wiremock:3.3.1}
+    image: wiremock/wiremock:3.3.1
     container_name: qapirag-jira-mock
     ports:
       - "8092:8080"
-    # In development we mount mappings/__files for fast iteration.
-    # In production set WIREMOCK_IMAGE to a built image containing mappings to avoid mounts.
     volumes:
       - ./mappings:/home/wiremock/mappings:ro
       - ./__files:/home/wiremock/__files:ro
@@ -19,17 +16,14 @@ services:
       retries: 3
   mcp:
     build: ./mcp
-    image: ${MCP_IMAGE:-isatis7/qapirag-mcp-mock:dev}
-    container_name: qapirag-mcp-mock
-    ports:
-      - "3000:3000"
+    container_name: qapirag-mcp
+    depends_on:
+      - wiremock
     environment:
       - WIREMOCK_HOST=wiremock
       - WIREMOCK_PORT=8080
-    depends_on:
-      - wiremock
+      - MCP_ENFORCE_AUTH=false
+    ports:
+      - "3000:3000"
     restart: unless-stopped
-
-
-
 

@@ -12,4 +12,3 @@ Fichiers importants :
 - `integration-tests.md` — instructions et prompt pour générer les tests MCP.
 
 Consigne : placer ces fichiers dans le repo et les garder à jour avec tout changement de mapping ou d'API attendu par le client.
-

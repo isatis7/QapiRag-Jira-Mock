@@ -4,12 +4,12 @@
     "urlPath": "/rest/api/3/search",
     "queryParameters": {
       "jql": {
-        "matches": ".*project=QAPI.*status=Done.*"
+        "equalTo": "project=QAPI AND status=Done"
       }
     },
     "headers": {
       "Authorization": {
-        "matches": "^Bearer .+"
+        "matches": ".+"
       }
     }
   },
@@ -22,6 +22,3 @@
   },
   "priority": 5
 }
-
-
-

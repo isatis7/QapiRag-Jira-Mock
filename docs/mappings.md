@@ -28,4 +28,3 @@ Exemple (succinct) :
 Validation des fixtures :
 - Assurez-vous que les champs attendus par le client existent : `key`, `id`, `fields.summary`, `fields.status.name`, `fields.assignee.displayName`.
 - Gardez les dates ISO8601 si le client les parse.
-

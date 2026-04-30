@@ -183,4 +183,3 @@ Si vous voulez, je peux :
 - créer un `systemd` unit + timer qui exécute `scripts/health-check.sh` régulièrement sur votre VM.
 
 Choisissez la suite et je l'implémente.
-
