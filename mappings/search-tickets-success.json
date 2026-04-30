@@ -5,7 +5,7 @@
     "urlPath": "/rest/api/3/search",
     "queryParameters": {
       "jql": {
-        "equalTo": "project=QAPI"
+        "matches": ".*project.*QAPI.*"
       }
     },
     "headers": {

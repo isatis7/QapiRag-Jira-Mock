@@ -2,6 +2,16 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+// Authentication middleware for MCP: require Bearer token except for /health
+const MCP_TOKEN = process.env.MCP_TOKEN || 'test-token';
+app.use((req, res, next) => {
+  if (req.path === '/health') return next();
+  const auth = req.headers['authorization'] || '';
+  if (!auth.startsWith('Bearer ') || auth.slice(7) !== MCP_TOKEN) {
+    return res.status(401).json({ error: 'Unauthorized', message: 'Bearer token invalide ou absent' });
+  }
+  next();
+});
 const WIREMOCK_HOST = process.env.WIREMOCK_HOST || 'wiremock';
 const WIREMOCK_PORT = process.env.WIREMOCK_PORT || '8080';
 const WIREMOCK_BASE = `http://${WIREMOCK_HOST}:${WIREMOCK_PORT}`;

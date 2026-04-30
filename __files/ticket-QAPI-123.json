@@ -5,7 +5,7 @@
   "key": "QAPI-123",
   "fields": {
     "summary": "Connexion impossible à Jira",
-    "description": "L'utilisateur ne peut pas se connecter à Jira via SSO.",
+    "description": "Contexte : après la mise à jour du connecteur SSO Keycloak (version 2.3.1), plusieurs utilisateurs ont signalé des échecs d'authentification. Les logs côté application montrent des erreurs de validation du jeton SAML suivies d'exceptions au niveau du middleware d'authentification.\n\nDétails techniques : lors d'une tentative d'authentification, la stack trace révèle une NullPointerException dans le composant de parsing du NameID, puis une levée d'IOException lors du rafraîchissement de la session. Extrait de logs :\njava.lang.NullPointerException: Cannot read property 'getName' of null\n    at com.company.sso.KeycloakConnector.parseNameID(KeycloakConnector.java:142)\n    at com.company.sso.KeycloakConnector.authenticate(KeycloakConnector.java:89)\n    at com.company.middleware.SsoMiddleware.handle(SsoMiddleware.java:47)\n\nReproduction : se connecter via SSO avec un compte importé sans attribut 'NameID' (observé sur certains comptes d'annuaire). Étapes : 1) accéder au portail, 2) cliquer sur 'Connexion via SSO', 3) observer l'échec côté serveur.\n\nImpact : bloque l'accès des utilisateurs au produit et empêche l'utilisation normale du service pendant la fenêtre de release.",
     "issuetype": {
       "name": "Story"
     },
@@ -23,7 +23,26 @@
     "labels": [
       "backend",
       "qapirag"
-    ]
+    ],
+    "comment": {
+      "comments": [
+        {
+          "id": "30001",
+          "author": { "displayName": "Jean Dupont" },
+          "body": "J'ai reproduit le problème en local. Il semble lié à la version 2.3.1 du connecteur SSO. En cours d'investigation.",
+          "created": "2026-04-03T14:22:00.000+0000"
+        },
+        {
+          "id": "30002",
+          "author": { "displayName": "Alice Martin" },
+          "body": "Confirmé. Le fix est dans la PR #47. Merci de tester sur l'environnement de staging avant de merger.",
+          "created": "2026-04-04T09:45:00.000+0000"
+        }
+      ],
+      "total": 2,
+      "maxResults": 10,
+      "startAt": 0
+    }
   },
   "expand": "operations,versionedRepresentations,editmeta,changelog"
 }
