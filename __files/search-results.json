@@ -11,7 +11,7 @@
       "fields": {
         "summary": "Connexion impossible à Jira",
         "issuetype": { "name": "Story" },
-        "status": { "name": "To Do" },
+        "status": { "name": "In Progress" },
         "assignee": { "displayName": "Jean Dupont" }
       }
     },
