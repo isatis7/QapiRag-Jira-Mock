@@ -35,4 +35,3 @@ bash scripts/health-check.sh
 ```
 
 Si tous les checks sont OK, le mock est prêt pour exécuter des tests E2E ou pour être ciblé par le MCP.
-

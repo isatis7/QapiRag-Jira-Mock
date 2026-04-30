@@ -1,11 +1,10 @@
-
 {
   "request": {
     "method": "GET",
     "urlPath": "/rest/api/3/search",
     "queryParameters": {
       "jql": {
-        "equalTo": "project=QAPI"
+        "equalTo": "project=QAPI AND status=Done"
       }
     },
     "headers": {
@@ -16,11 +15,10 @@
   },
   "response": {
     "status": 200,
-    "bodyFileName": "search-results.json",
+    "bodyFileName": "search-empty.json",
     "headers": {
       "Content-Type": "application/json"
     }
   },
   "priority": 5
 }
-

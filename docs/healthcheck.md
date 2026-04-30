@@ -44,4 +44,3 @@ Activer :
 sudo systemctl daemon-reload
 sudo systemctl enable --now qapirag-jira-mock-health.timer
 ```
-

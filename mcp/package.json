@@ -1,0 +1,25 @@
+{
+  "name": "qapirag-mcp-mock",
+  "version": "0.1.0",
+  "description": "MCP router in front of WireMock for QapiRag testing",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "jest",
+    "test:integration": "INTEGRATION=true jest test/integration --runInBand",
+    "test:unit": "jest test --runInBand --testPathIgnorePatterns=\\/integration\\/"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "jest": "^29.6.4",
+    "supertest": "^6.3.3",
+    "node-fetch": "^2.6.7"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
+
+
