@@ -5,25 +5,30 @@
   "key": "QAPI-123",
   "fields": {
     "summary": "Connexion impossible à Jira",
-    "description": "L'utilisateur ne peut pas se connecter à Jira via SSO.",
-    "issuetype": {
-      "name": "Story"
-    },
-    "status": {
-      "name": "In Progress"
-    },
-    "assignee": {
-      "displayName": "Jean Dupont"
-    },
-    "priority": {
-      "name": "Major"
-    },
+    "description": "L'utilisateur ne peut pas se connecter à Jira via SSO.\n\nContexte : après la migration SSO le 2026-03-28 plusieurs utilisateurs ont signalé une erreur d'authentification. Les logs montrent des erreurs de validation du token SAML et des timeouts vers le fournisseur d'identité.\n\nÉtapes pour reproduire :\n1) Aller sur la page de login\n2) Cliquer sur 'Connexion via SSO'\n3) Observer l'erreur 500 dans la console du navigateur.\n\nImpact : bloque l'accès des utilisateurs au produit, prioritaire pour la release 1.2.",
+    "issuetype": { "name": "Story" },
+    "status": { "name": "In Progress" },
+    "assignee": { "displayName": "Jean Dupont" },
+    "priority": { "name": "Major" },
     "created": "2026-04-01T09:12:00.000+0000",
     "updated": "2026-04-05T11:30:00.000+0000",
-    "labels": [
-      "backend",
-      "qapirag"
-    ]
+    "labels": [ "backend", "qapirag" ],
+    "comment": {
+      "comments": [
+        {
+          "id": "30001",
+          "author": { "displayName": "Alice Martin" },
+          "body": "J'ai investigué : la configuration SAML retournait un champ 'NameID' vide dans certains cas. Patch proposé pour ajouter un fallback.",
+          "created": "2026-04-02T10:00:00.000+0000"
+        },
+        {
+          "id": "30002",
+          "author": { "displayName": "Jean Dupont" },
+          "body": "Testé en staging, le fallback corrige le problème pour 95% des cas, reste à déployer en production.",
+          "created": "2026-04-04T15:20:00.000+0000"
+        }
+      ]
+    }
   },
   "expand": "operations,versionedRepresentations,editmeta,changelog"
 }
