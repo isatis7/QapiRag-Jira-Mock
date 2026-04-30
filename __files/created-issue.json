@@ -1,0 +1,12 @@
+{
+  "id": "10003",
+  "key": "QAPI-125",
+  "self": "https://jira.example.com/rest/api/3/issue/10003",
+  "fields": {
+    "summary": "Nouvelle demande créée via API",
+    "issuetype": { "name": "Task" },
+    "status": { "name": "To Do" },
+    "assignee": { "displayName": "Unassigned" }
+  }
+}
+

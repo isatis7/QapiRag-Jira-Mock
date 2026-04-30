@@ -1,0 +1,20 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/rest/api/3/issue",
+    "headers": {
+      "Authorization": { "matches": ".+" },
+      "Content-Type": { "contains": "application/json" }
+    }
+  },
+  "response": {
+    "status": 201,
+    "bodyFileName": "created-issue.json",
+    "headers": {
+      "Content-Type": "application/json",
+      "Location": "https://jira.example.com/rest/api/3/issue/QAPI-125"
+    }
+  },
+  "priority": 5
+}
+

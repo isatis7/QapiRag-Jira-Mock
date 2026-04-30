@@ -1,0 +1,55 @@
+name: CI — WireMock mock
+
+on:
+  push:
+    paths:
+      - 'mappings/**'
+      - '__files/**'
+      - 'scripts/**'
+  pull_request:
+    paths:
+      - 'mappings/**'
+      - '__files/**'
+      - 'scripts/**'
+
+jobs:
+  validate-and-healthcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose jq
+
+      - name: Start WireMock via docker-compose
+        run: |
+          docker compose up -d
+
+      - name: Wait for WireMock to be healthy
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sS http://localhost:8092/health | jq -e '.status == "UP"' >/dev/null 2>&1; then
+              echo "WireMock ready"; exit 0
+            fi
+            echo "waiting for WireMock... ($i)"; sleep 2
+          done
+          exit 1
+
+      - name: Validate JSON syntax for mappings and fixtures
+        run: |
+          set -e
+          find mappings __files -name '*.json' -print0 | xargs -0 -n1 jq empty
+
+      - name: Run health-check script
+        run: |
+          chmod +x scripts/health-check.sh
+          ./scripts/health-check.sh http://127.0.0.1:8092
+
+      - name: Tear down
+        if: always()
+        run: |
+          docker compose down --remove-orphans
+
