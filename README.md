@@ -59,6 +59,41 @@ Comportement d'authentification :
 
 ----
 
+## Utiliser le mock comme serveur Jira pour le MCP
+
+Si vous souhaitez que le backend MCP (Spring Boot) cible ce mock comme serveur Jira, deux options sont possibles selon l'architecture de votre stack :
+
+- MCP et mock dans le même `docker-compose` : utilisez le nom de service interne `qapirag-jira-mock:8080` comme `JIRA_API_BASE_URL`. Exemple d'ajout dans le `docker-compose.yml` du projet MCP :
+
+```yaml
+# Extrait : ajouter après le service qapirag-app
+  qapirag-jira-mock:
+    image: wiremock/wiremock:3.3.1
+    container_name: qapirag-jira-mock
+    ports:
+      - "8092:8080"
+    volumes:
+      - ./jira-mock/mappings:/home/wiremock/mappings:ro
+      - ./jira-mock/__files:/home/wiremock/__files:ro
+    command: --verbose
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/__admin/mappings || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+# Dans le service qapirag-app :
+    environment:
+      - JIRA_API_BASE_URL=http://qapirag-jira-mock:8080
+      - JIRA_API_TOKEN=${JIRA_API_TOKEN:-dummy-token}
+```
+
+- Mock sur l'hôte et MCP en conteneur : utilisez `host.docker.internal:8092` (Windows / Mac) ou configurez un host mapping sur Linux.
+
+Recommandation : cloner ce dépôt mock comme `git submodule` (ou copier les dossiers `mappings/` et `__files/` dans `jira-mock/`) dans le repo MCP pour monter les mappings/fixtures depuis le compose du projet MCP.
+
+
 ## Tests et vérifications (rapides)
 
 Exemples `curl` :
