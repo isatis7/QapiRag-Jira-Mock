@@ -160,6 +160,16 @@ Sur Kubernetes, déployez l'image et exposez via Service/Ingress. Utilisez `read
   - lancer un container WireMock dans le job et exécuter `scripts/health-check.sh`.
 - Ajouter des tests de contrat (p.ex. JSON Schema) si votre client attend des structures exactes.
 
+## QA audit
+
+Un audit qualité a récemment identifié plusieurs améliorations appliquées dans la branche `fix/qa-audit-improvements` (PR #25) :
+
+- Robustesse des mappings JQL — utilisation de `matches` pour tolérer JQL encodés.
+- Enrichissement des fixtures — description longue et commentaires pour `ticket-QAPI-123.json`.
+- Authentification MCP — ajout d'un middleware Bearer token et variable `MCP_TOKEN` pour le service `mcp`.
+
+Voir `docs/qa-audit.md` pour le détail et les commandes de validation.
+
 ----
 
 ## Versionnement des mappings
