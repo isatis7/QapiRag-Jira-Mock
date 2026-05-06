@@ -1,3 +1,9 @@
+name: qapirag-jira-mock
+
+networks:
+  qapirag-jira-mock-net:
+    driver: bridge
+
 services:
   wiremock:
     image: wiremock/wiremock:3.3.1
@@ -14,6 +20,8 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    networks:
+      - qapirag-jira-mock-net
   mcp:
     build: ./mcp
     container_name: qapirag-mcp
@@ -26,4 +34,6 @@ services:
     ports:
       - "3000:3000"
     restart: unless-stopped
+    networks:
+      - qapirag-jira-mock-net
 
