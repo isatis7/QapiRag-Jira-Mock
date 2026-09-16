@@ -48,14 +48,20 @@ Note : Compose v2 ignore la clé `version` dans le fichier compose — c'est san
 
 Les mappings fournis (exemples) :
 
-- GET /rest/api/3/issue/QAPI-123  -> 200 (fixture `ticket-QAPI-123.json`)
-- GET /rest/api/3/issue/{key}    -> 404 si ticket inconnu (fixture 404 JSON)
-- GET /rest/api/3/issue/{key}?expand=changelog -> 200 (fixture `changelog-QAPI-123.json`)
-- GET /rest/api/3/search?jql=project=QAPI -> 200 (fixture `search-results.json`)
+- GET /rest/api/2/issue/QAPI-123  -> 200 (fixture `ticket-QAPI-123.json`)
+- GET /rest/api/2/issue/{key}    -> 404 si ticket inconnu (fixture 404 JSON)
+- GET /rest/api/2/issue/{key}?expand=changelog -> 200 (fixture `changelog-QAPI-123.json`)
+- GET /rest/api/3/search/jql?jql=project=QAPI -> 200 (fixture `search-results.json`)
 - GET /health -> 200 {"status":"UP"} (utilisé pour probes)
 
+Versions d'API (#26, alignées sur `fr.WATV.client.JiraClient`, repo QapiRagPOC) :
+`/rest/api/2/issue/...` pour la lecture/changelog (v2, car v3 renvoie `description`
+en objet ADF plutôt qu'en texte brut) ; `/rest/api/3/search/jql` pour la recherche
+(l'ancien `/rest/api/{2,3}/search` est déprécié puis supprimé par Atlassian Cloud,
+410 Gone). Le nouvel endpoint de recherche ne renvoie plus `total`/`startAt`.
+
 Comportement d'authentification :
-- Un mapping 401 est défini pour `GET /rest/api/3/issue/*` si l'en-tête `Authorization` est absent — envoyez un header (même fictif) pour atteindre les mappings 200/404.
+- Un mapping 401 est défini pour `GET /rest/api/2/issue/*` si l'en-tête `Authorization` est absent — envoyez un header (même fictif) pour atteindre les mappings 200/404.
 
 ----
 
@@ -65,19 +71,19 @@ Exemples `curl` :
 
 ```bash
 # Ticket trouvé (avec header Authorization exigé par les mappings)
-curl -i -H "Authorization: Bearer dummy" http://localhost:8092/rest/api/3/issue/QAPI-123
+curl -i -H "Authorization: Bearer dummy" http://localhost:8092/rest/api/2/issue/QAPI-123
 
-# Recherche (avec Authorization)
-curl -i -H "Authorization: Bearer dummy" "http://localhost:8092/rest/api/3/search?jql=project=QAPI"
+# Recherche (avec Authorization) -- #26 : /rest/api/3/search/jql
+curl -i -H "Authorization: Bearer dummy" "http://localhost:8092/rest/api/3/search/jql?jql=project=QAPI&fields=summary,status,priority,assignee,updated"
 
 # Changelog
-curl -i -H "Authorization: Bearer dummy" "http://localhost:8092/rest/api/3/issue/QAPI-123?expand=changelog"
+curl -i -H "Authorization: Bearer dummy" "http://localhost:8092/rest/api/2/issue/QAPI-123?expand=changelog"
 
 # Ticket inconnu (renvoie 404 si Authorization présent)
-curl -i -H "Authorization: Bearer dummy" http://localhost:8092/rest/api/3/issue/INEXISTANT-999
+curl -i -H "Authorization: Bearer dummy" http://localhost:8092/rest/api/2/issue/INEXISTANT-999
 
 # 401 (absence d'Authorization)
-curl -i http://localhost:8092/rest/api/3/issue/QAPI-123
+curl -i http://localhost:8092/rest/api/2/issue/QAPI-123
 
 # Health endpoint
 curl -i http://localhost:8092/health
@@ -94,7 +100,7 @@ Un script utile : `scripts/health-check.sh` — il vérifie que :
 
 - l'API admin `/__admin/mappings` répond,
 - l'endpoint `/health` retourne 200,
-- un exemple métier `/rest/api/3/issue/QAPI-123` répond et contient les champs attendus.
+- un exemple métier `/rest/api/2/issue/QAPI-123` répond et contient les champs attendus.
 
 Usage :
 

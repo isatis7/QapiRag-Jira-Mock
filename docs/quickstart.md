@@ -18,13 +18,13 @@ curl -sS http://127.0.0.1:8092/__admin/mappings | jq '.mappings | length'
 
 ```bash
 # Ticket trouvé (avec header Authorization requis par les mappings)
-curl -i -H "Authorization: Bearer dummy" http://127.0.0.1:8092/rest/api/3/issue/QAPI-123
+curl -i -H "Authorization: Bearer dummy" http://127.0.0.1:8092/rest/api/2/issue/QAPI-123
 
-# Recherche
-curl -i -H "Authorization: Bearer dummy" "http://127.0.0.1:8092/rest/api/3/search?jql=project=QAPI"
+# Recherche (#26 : /rest/api/3/search/jql, l'ancien /rest/api/3/search est supprimé par Atlassian Cloud)
+curl -i -H "Authorization: Bearer dummy" "http://127.0.0.1:8092/rest/api/3/search/jql?jql=project=QAPI&fields=summary,status,priority,assignee,updated"
 
 # Changelog
-curl -i -H "Authorization: Bearer dummy" "http://127.0.0.1:8092/rest/api/3/issue/QAPI-123?expand=changelog"
+curl -i -H "Authorization: Bearer dummy" "http://127.0.0.1:8092/rest/api/2/issue/QAPI-123?expand=changelog"
 ```
 
 4) Exécuter le script d'auto‑vérification :

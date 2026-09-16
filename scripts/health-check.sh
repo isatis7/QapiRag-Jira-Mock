@@ -10,7 +10,7 @@ curl -fsS "$BASE_URL/__admin/mappings" | jq '.mappings | length' || (echo "Faile
 echo "Checking /health endpoint..."
 curl -fsS "$BASE_URL/health" | jq . || (echo "Health endpoint failed" && exit 3)
 
-echo "Checking sample stub /rest/api/3/issue/QAPI-123 (with Authorization)..."
-curl -fsS -H "Authorization: Bearer dummy" "$BASE_URL/rest/api/3/issue/QAPI-123" | jq '{key: .key, id: .id, summary: .fields.summary}' || (echo "Stub request failed" && exit 4)
+echo "Checking sample stub /rest/api/2/issue/QAPI-123 (with Authorization)..."
+curl -fsS -H "Authorization: Bearer dummy" "$BASE_URL/rest/api/2/issue/QAPI-123" | jq '{key: .key, id: .id, summary: .fields.summary}' || (echo "Stub request failed" && exit 4)
 
 echo "All checks OK"

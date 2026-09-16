@@ -13,6 +13,16 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
+/**
+ * #26 : ce test intégration validait les stubs WireMock contre EUX-MÊMES (mêmes
+ * chemins/formes que les mappings), pas contre l'usage RÉEL du client consommateur
+ * (fr.WATV.client.JiraClient, repo QapiRagPOC) -- il passait donc au vert alors que
+ * les stubs étaient désynchronisés (issue/changelog en /rest/api/3/... au lieu de
+ * /rest/api/2/..., search en /rest/api/3/search au lieu de /rest/api/3/search/jql,
+ * Jira Cloud ayant migré/supprimé les anciens endpoints). Réaligné sur les chemins
+ * et la forme de réponse RÉELLEMENT utilisés par JiraClient.searchTickets/getTicket/
+ * getChangeLog (recherche : plus de champ `total`, pagination via `isLast`).
+ */
 public class MockIntegrationTest {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -51,7 +61,7 @@ public class MockIntegrationTest {
     @Test
     void testGetIssue_Success() throws IOException, InterruptedException {
         HttpRequest req = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/rest/api/3/issue/QAPI-123"))
+                .uri(URI.create(baseUrl + "/rest/api/2/issue/QAPI-123"))
                 .header("Authorization", "Bearer " + token)
                 .timeout(Duration.ofSeconds(5))
                 .GET()
@@ -69,7 +79,7 @@ public class MockIntegrationTest {
     @Test
     void testGetIssue_Unauthorized() throws IOException, InterruptedException {
         HttpRequest req = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/rest/api/3/issue/QAPI-123"))
+                .uri(URI.create(baseUrl + "/rest/api/2/issue/QAPI-123"))
                 .timeout(Duration.ofSeconds(5))
                 .GET()
                 .build();
@@ -80,7 +90,7 @@ public class MockIntegrationTest {
     @Test
     void testGetIssue_NotFound() throws IOException, InterruptedException {
         HttpRequest req = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/rest/api/3/issue/INEXISTANT-999"))
+                .uri(URI.create(baseUrl + "/rest/api/2/issue/INEXISTANT-999"))
                 .header("Authorization", "Bearer " + token)
                 .timeout(Duration.ofSeconds(5))
                 .GET()
@@ -93,9 +103,14 @@ public class MockIntegrationTest {
 
     @Test
     void testSearch_WithResults() throws IOException, InterruptedException {
+        // #26 : /rest/api/3/search/jql (Jira Cloud enhanced JQL search) -- le
+        // vieil endpoint /rest/api/3/search est supprimé (410 Gone). `fields` est
+        // requis explicitement, cf. JiraClient.searchTickets (repo QapiRagPOC).
         String q = "project=QAPI";
         HttpRequest req = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/rest/api/3/search?jql=" + java.net.URLEncoder.encode(q, java.nio.charset.StandardCharsets.UTF_8)))
+                .uri(URI.create(baseUrl + "/rest/api/3/search/jql?jql="
+                        + java.net.URLEncoder.encode(q, java.nio.charset.StandardCharsets.UTF_8)
+                        + "&fields=summary,status,priority,assignee,updated&maxResults=50"))
                 .header("Authorization", "Bearer " + token)
                 .timeout(Duration.ofSeconds(5))
                 .GET()
@@ -103,15 +118,20 @@ public class MockIntegrationTest {
         HttpResponse<String> res = CLIENT.send(req, HttpResponse.BodyHandlers.ofString());
         Assertions.assertThat(res.statusCode()).isEqualTo(200);
         JsonNode json = MAPPER.readTree(res.body());
-        Assertions.assertThat(json.get("total").asInt()).isGreaterThan(0);
+        // #26 : le nouvel endpoint ne renvoie plus `total` (cf. JiraSearchResults,
+        // repo QapiRagPOC) -- la taille réelle du tableau `issues` est le seul
+        // signal fiable désormais.
         Assertions.assertThat(json.get("issues")).isNotNull();
+        Assertions.assertThat(json.get("issues").size()).isGreaterThan(0);
     }
 
     @Test
     void testSearch_Empty() throws IOException, InterruptedException {
         String q = "project=QAPI AND status=Done";
         HttpRequest req = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/rest/api/3/search?jql=" + java.net.URLEncoder.encode(q, java.nio.charset.StandardCharsets.UTF_8)))
+                .uri(URI.create(baseUrl + "/rest/api/3/search/jql?jql="
+                        + java.net.URLEncoder.encode(q, java.nio.charset.StandardCharsets.UTF_8)
+                        + "&fields=summary,status,priority,assignee,updated&maxResults=50"))
                 .header("Authorization", "Bearer " + token)
                 .timeout(Duration.ofSeconds(5))
                 .GET()
@@ -119,13 +139,13 @@ public class MockIntegrationTest {
         HttpResponse<String> res = CLIENT.send(req, HttpResponse.BodyHandlers.ofString());
         Assertions.assertThat(res.statusCode()).isEqualTo(200);
         JsonNode json = MAPPER.readTree(res.body());
-        Assertions.assertThat(json.get("total").asInt()).isEqualTo(0);
+        Assertions.assertThat(json.get("issues").size()).isEqualTo(0);
     }
 
     @Test
     void testGetIssue_Changelog() throws IOException, InterruptedException {
         HttpRequest req = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/rest/api/3/issue/QAPI-123?expand=changelog"))
+                .uri(URI.create(baseUrl + "/rest/api/2/issue/QAPI-123?expand=changelog"))
                 .header("Authorization", "Bearer " + token)
                 .timeout(Duration.ofSeconds(5))
                 .GET()

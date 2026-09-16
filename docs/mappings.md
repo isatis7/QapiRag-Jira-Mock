@@ -20,10 +20,18 @@ Bonnes pratiques dans les mappings :
 Exemple (succinct) :
 ```json
 {
-  "request": { "method": "GET", "urlPath": "/rest/api/3/issue/QAPI-123", "headers": { "Authorization": { "matches": ".+" } } },
+  "request": { "method": "GET", "urlPath": "/rest/api/2/issue/QAPI-123", "headers": { "Authorization": { "matches": ".+" } } },
   "response": { "status": 200, "bodyFileName": "ticket-QAPI-123.json", "headers": { "Content-Type": "application/json" } }
 }
 ```
+
+Versions d'API réellement consommées (#26, alignées sur `fr.WATV.client.JiraClient`,
+repo QapiRagPOC) : `/rest/api/2/issue/{key}` (get + changelog via `?expand=changelog`,
+v2 car v3 renvoie `description` en objet ADF plutôt qu'en texte brut) et
+`/rest/api/3/search/jql` (recherche JQL — l'ancien `/rest/api/{2,3}/search` a été
+déprécié puis supprimé par Atlassian Cloud, 410 Gone). Le nouvel endpoint de
+recherche ne renvoie plus `total`/`startAt` — seuls `issues`/`nextPageToken`/
+`isLast` existent.
 
 Validation des fixtures :
 - Assurez-vous que les champs attendus par le client existent : `key`, `id`, `fields.summary`, `fields.status.name`, `fields.assignee.displayName`.
